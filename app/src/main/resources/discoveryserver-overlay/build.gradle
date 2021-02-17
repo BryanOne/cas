@@ -9,6 +9,7 @@ buildscript {
         classpath "io.freefair.gradle:maven-plugin:${project.gradleFreeFairPluginVersion}"
         classpath "io.freefair.gradle:lombok-plugin:${project.gradleFreeFairPluginVersion}"
         classpath "io.spring.gradle:dependency-management-plugin:${project.gradleDependencyManagementPluginVersion}"
+        classpath "gradle.plugin.com.google.cloud.tools:jib-gradle-plugin:${project.jibVersion}"
     }
 }
 
@@ -24,6 +25,8 @@ apply plugin: "io.spring.dependency-management"
 apply plugin: "io.freefair.war-overlay"
 apply plugin: "war"
 apply plugin: "org.springframework.boot"
+
+apply from: rootProject.file("gradle/dockerjib.gradle")
 
 dependencyManagement {
     imports {
@@ -62,8 +65,8 @@ bootWar {
         launchScript()
     }
 
-    archiveName "casdiscoveryserver.war"
-    baseName "casdiscoveryserver"
+    archiveName "app.war"
+    baseName "app"
 
     excludeDevtools = false
 }

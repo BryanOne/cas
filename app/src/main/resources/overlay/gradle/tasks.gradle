@@ -47,7 +47,7 @@ task copyCasConfiguration(type: Copy, group: "CAS", description: "Copy the CAS c
 
 task explodeWarOnly(type: Copy, group: "CAS", description: "Explodes the CAS web application archive") {
     dependsOn 'build'
-    from zipTree("build/libs/${casWebApplicationBinaryName}")
+    from zipTree("build/libs/app.war")
     into explodedDir
     doLast {
         println "Exploded WAR into ${explodedDir}"
@@ -74,7 +74,7 @@ task run(group: "build", description: "Run the CAS web application in embedded c
         javaexec {
             main = "-jar"
             jvmArgs = casRunArgs
-            args = ["build/libs/${casWebApplicationBinaryName}"]
+            args = ["build/libs/app.war"]
             systemProperties = System.properties
             logger.info "Started ${commandLine}"
         }
@@ -109,7 +109,7 @@ task debug(group: "CAS", description: "Debug the CAS web application in embedded
             main = "-jar"
             jvmArgs = casArgs
             debug = true
-            args = ["build/libs/${casWebApplicationBinaryName}"]
+            args = ["build/libs/app.war"]
             systemProperties = System.properties
             logger.info "Started ${commandLine}"
         }

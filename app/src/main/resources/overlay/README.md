@@ -178,7 +178,7 @@ Run the CAS web application as a *standalone* executable WAR:
 
 ## External
 
-Deploy the binary web application file `cas.war` after a successful build to a servlet container of choice.
+Deploy the binary web application file in `build/libs` after a successful build to a servlet container of choice.
 
 ## Docker
 

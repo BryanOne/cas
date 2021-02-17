@@ -37,7 +37,7 @@ CAS will be available at:
 
 ## External
 
-Deploy resultant `target/cas-management.war` to a servlet container of choice.
+Deploy the binary web application file in `build/libs` after a successful build to a servlet container of choice.
 
 ### Dockerfile
 

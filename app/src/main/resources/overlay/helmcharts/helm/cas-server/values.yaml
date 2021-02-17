@@ -64,7 +64,7 @@ casServerContainer:
     newHeapOpt: -Xms600M
     debugEnabled: true
     debugSuspend: "n" # could be n or y, must quote or yaml changes to boolean
-  warPath: 'cas.war'
+  warPath: 'app.war'
   ## Override cmd
   ##
   command:
@@ -244,7 +244,7 @@ bootAdminContainer:
     newHeapOpt: -Xms250M
     debugEnabled: true
     debugSuspend: "n" # could be n or y, must quote or yaml changes to boolean
-  warPath: 'casbootadminserver.war'
+  warPath: 'app.war'
   ## Override cmd
   ##
   command:
@@ -384,7 +384,7 @@ mgmtContainer:
     newHeapOpt: -Xms250M
     debugEnabled: true
     debugSuspend: "n" # could be n or y, must quote or yaml changes to boolean
-  warPath: 'cas-management.war'
+  warPath: 'app.war'
   ## Override cmd
   ##
   command:

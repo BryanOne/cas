@@ -12,6 +12,8 @@ import org.apereo.cas.initializr.contrib.OverlayOverrideConfigurationContributor
 import org.apereo.cas.initializr.contrib.OverlaySpringFactoriesContributor;
 import org.apereo.cas.initializr.contrib.ProjectAssetsUndoContributor;
 import org.apereo.cas.initializr.contrib.ProjectLicenseContributor;
+import org.apereo.cas.initializr.contrib.docker.jib.OverlayGradleJibContributor;
+import org.apereo.cas.initializr.contrib.docker.jib.OverlayGradleJibEntrypointContributor;
 import org.apereo.cas.initializr.contrib.gradle.GradleWrapperConfigurationContributor;
 import org.apereo.cas.initializr.contrib.gradle.GradleWrapperExecutablesContributor;
 import org.apereo.cas.initializr.info.DependencyAliasesInfoContributor;
@@ -19,6 +21,7 @@ import org.apereo.cas.initializr.metadata.CasOverlayInitializrMetadataUpdateStra
 import org.apereo.cas.initializr.rate.RateLimitInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -26,6 +29,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @ProjectGenerationConfiguration
 public class CasInitializrConfiguration {
+    @Autowired
+    private ConfigurableApplicationContext applicationContext;
+    
     @Autowired
     @Bean
     public DependencyAliasesInfoContributor dependencyAliasesInfoContributor(final InitializrMetadataProvider provider) {
@@ -60,6 +66,14 @@ public class CasInitializrConfiguration {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new OverlayOverrideConfigurationContributor());
         chain.addContributor(new OverlaySpringFactoriesContributor());
+        return chain;
+    }
+
+    @Bean
+    public ChainingSingleResourceProjectContributor overlayJibConfigurationContributor() {
+        var chain = new ChainingSingleResourceProjectContributor();
+        chain.addContributor(new OverlayGradleJibContributor());
+        chain.addContributor(new OverlayGradleJibEntrypointContributor(applicationContext));
         return chain;
     }
 

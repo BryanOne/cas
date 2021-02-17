@@ -16,6 +16,6 @@ if [ $ENTRYPOINT_DEBUG == "true" ]; then
   echo -e "\nJava args: ${JVM_MEM_OPTS} ${JVM_EXTRA_OPTS}"
 fi
 
-echo -e "\nRunning CAS Boot Admin Server..."
+echo -e "\nRunning CAS..."
 # shellcheck disable=SC2086
-exec java $JVM_EXTRA_OPTS $JVM_MEM_OPTS -jar casbootadminserver.war "$@"
+exec java $JVM_EXTRA_OPTS $JVM_MEM_OPTS -jar app.war "$@"

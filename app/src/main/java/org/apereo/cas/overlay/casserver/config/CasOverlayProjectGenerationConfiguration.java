@@ -16,8 +16,6 @@ import org.apereo.cas.overlay.casserver.contrib.CasOverlayLoggingConfigurationCo
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayReadMeContributor;
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayWebXmlContributor;
 import org.apereo.cas.overlay.casserver.contrib.docker.CasOverlayDockerContributor;
-import org.apereo.cas.overlay.casserver.contrib.docker.jib.CasOverlayGradleJibContributor;
-import org.apereo.cas.overlay.casserver.contrib.docker.jib.CasOverlayGradleJibEntrypointContributor;
 import org.apereo.cas.overlay.casserver.contrib.gradle.CasOverlayGradleBuildContributor;
 import org.apereo.cas.overlay.casserver.contrib.gradle.CasOverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.casserver.contrib.gradle.CasOverlayGradleSettingsContributor;
@@ -64,16 +62,8 @@ public class CasOverlayProjectGenerationConfiguration {
         chain.addContributor(new CasOverlayLoggingConfigurationContributor());
         chain.addContributor(new CasOverlayReadMeContributor(applicationContext));
         return chain;
-
     }
 
-    @Bean
-    public ChainingSingleResourceProjectContributor casOverlayJibConfigurationContributor() {
-        var chain = new ChainingSingleResourceProjectContributor();
-        chain.addContributor(new CasOverlayGradleJibContributor());
-        chain.addContributor(new CasOverlayGradleJibEntrypointContributor());
-        return chain;
-    }
 
     @Bean
     public CasOverlayGradleBuild gradleBuild(ObjectProvider<BuildCustomizer<CasOverlayGradleBuild>> buildCustomizers,

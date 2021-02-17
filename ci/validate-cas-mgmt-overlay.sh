@@ -16,7 +16,7 @@ echo "Building CAS Mgmt Overlay"
 
 echo "Launching CAS Mgmt Overlay"
 touch ./users.json
-java -jar build/libs/cas-management.war --spring.profiles.active=none --mgmt.user-properties-file=file:${PWD}/users.json --server.ssl.enabled=false &
+java -jar build/libs/app.war --spring.profiles.active=none --mgmt.user-properties-file=file:${PWD}/users.json --server.ssl.enabled=false &
 pid=$!
 sleep 5
 echo "Launched CAS with pid ${pid}. Waiting for server to come online..."
@@ -32,15 +32,18 @@ echo "Build Container Image w/ Docker"
 chmod +x *.sh
 ./docker-build.sh
 
+echo "Building Docker image with Jib"
+chmod -R 777 ./*.sh
+./gradlew jibDockerBuild
 
 downloadTomcat
-mv build/libs/cas-management.war ${CATALINA_HOME}/webapps/cas-management.war
+mv build/libs/app.war ${CATALINA_HOME}/webapps/app.war
 
 export MGMT_USER-PROPERTIES-FILE=file:${PWD}/users.json
 ${CATALINA_HOME}/bin/startup.sh & >/dev/null 2>&1
 pid=$!
 sleep 30
-rc=`curl -L -k -u casuser:password -o /dev/null --connect-timeout 60 -s  -I -w "%{http_code}" http://localhost:8080/cas-management`
+rc=`curl -L -k -u casuser:password -o /dev/null --connect-timeout 60 -s  -I -w "%{http_code}" http://localhost:8080/app`
 ${CATALINA_HOME}/bin/shutdown.sh & >/dev/null 2>&1
 kill -9 $pid
 if [ "$rc" == 200 ]; then

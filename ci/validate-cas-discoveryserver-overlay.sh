@@ -15,7 +15,7 @@ echo "Building CAS Config Server Overlay"
 ./gradlew clean build --no-daemon
 
 echo "Launched CAS with pid ${pid}. Waiting for server to come online..."
-java -jar build/libs/casdiscoveryserver.war --server.ssl.enabled=false --spring.security.user.password=password --spring.security.user.name=casuser &
+java -jar build/libs/app.war --server.ssl.enabled=false --spring.security.user.password=password --spring.security.user.name=casuser &
 pid=$!
 sleep 5
 
@@ -26,8 +26,12 @@ done
 echo -e "\n\nReady!"
 kill -9 $pid
 
+echo "Building Docker image with Jib"
+chmod -R 777 ./*.sh
+./gradlew jibDockerBuild
+
 downloadTomcat
-mv build/libs/casdiscoveryserver.war ${CATALINA_HOME}/webapps/casdiscoveryserver.war
+mv build/libs/app.war ${CATALINA_HOME}/webapps/app.war
 
 export SPRING_SECURITY_USER_PASSWORD=password
 export SPRING_SECURITY_USER_NAME=casuser
@@ -35,7 +39,7 @@ export SPRING_SECURITY_USER_NAME=casuser
 ${CATALINA_HOME}/bin/startup.sh & >/dev/null 2>&1
 pid=$!
 sleep 30
-rc=`curl -k -L -o /dev/null -u casuser:password --connect-timeout 60 -s -I -w "%{http_code}" http://localhost:8080/casdiscoveryserver/`
+rc=`curl -k -L -o /dev/null -u casuser:password --connect-timeout 60 -s -I -w "%{http_code}" http://localhost:8080/app/`
 ${CATALINA_HOME}/bin/shutdown.sh & >/dev/null 2>&1
 kill -9 $pid
 if [ "$rc" == 200 ]; then

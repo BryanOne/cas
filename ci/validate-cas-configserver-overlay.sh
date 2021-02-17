@@ -25,7 +25,7 @@ sudo keytool -genkey -noprompt -alias cas -keyalg RSA -keypass changeit -storepa
 [ -f "${keystore}" ] && echo "Created ${keystore}"
 
 
-java -jar build/libs/casconfigserver.war --server.ssl.enabled=false --spring.security.user.password=password --spring.security.user.name=casuser &
+java -jar build/libs/app.war --server.ssl.enabled=false --spring.security.user.password=password --spring.security.user.name=casuser &
 pid=$!
 sleep 5
 
@@ -37,8 +37,12 @@ done
 echo -e "\n\nReady!"
 kill -9 $pid
 
+echo "Building Docker image with Jib"
+chmod -R 777 ./*.sh
+./gradlew jibDockerBuild
+
 downloadTomcat
-mv build/libs/casconfigserver.war ${CATALINA_HOME}/webapps/casconfigserver.war
+mv build/libs/app.war ${CATALINA_HOME}/webapps/app.war
 
 export SPRING_SECURITY_USER_PASSWORD=password
 export SPRING_SECURITY_USER_NAME=casuser
@@ -46,7 +50,7 @@ export SPRING_SECURITY_USER_NAME=casuser
 ${CATALINA_HOME}/bin/startup.sh & >/dev/null 2>&1
 pid=$!
 sleep 30
-rc=`curl -L -k -u casuser:password -o /dev/null --connect-timeout 60 -s  -I -w "%{http_code}" http://localhost:8080/casconfigserver/env/default`
+rc=`curl -L -k -u casuser:password -o /dev/null --connect-timeout 60 -s  -I -w "%{http_code}" http://localhost:8080/app/env/default`
 ${CATALINA_HOME}/bin/shutdown.sh & >/dev/null 2>&1
 kill -9 $pid
 if [ "$rc" == 200 ]; then

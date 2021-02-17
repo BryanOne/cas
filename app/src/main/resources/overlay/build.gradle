@@ -18,37 +18,19 @@ repositories {
     mavenLocal()
     mavenCentral()
     jcenter()
-    maven {
-        url "https://dl.bintray.com/apereocas/webauthn-cas/"
-        mavenContent { releasesOnly() }
-    }
-    maven {
-        url "https://dl.bintray.com/apereocas/jradius/"
-        mavenContent { releasesOnly() }
-    }
     maven { 
         url "https://oss.sonatype.org/content/repositories/snapshots" 
         mavenContent { snapshotsOnly() }
-    }
-    maven {
-        url "https://dl.bintray.com/uniconiam/maven"
-        mavenContent { releasesOnly() }
     }
     maven { 
         mavenContent { releasesOnly() }
         url "https://build.shibboleth.net/nexus/content/repositories/releases/" 
     }
-    maven { 
-        mavenContent { snapshotsOnly() }
-        url "https://oss.jfrog.org/artifactory/oss-snapshot-local" 
-    }
 }
 
 def casServerVersion = project.'cas.version'
-def casWebApplicationBinaryName = "cas.war"
 
 project.ext."casServerVersion" = casServerVersion
-project.ext."casWebApplicationBinaryName" = casWebApplicationBinaryName
 
 apply plugin: "io.freefair.war-overlay"
 apply plugin: "io.freefair.lombok"

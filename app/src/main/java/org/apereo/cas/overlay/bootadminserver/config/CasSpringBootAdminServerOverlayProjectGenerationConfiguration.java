@@ -12,13 +12,6 @@ import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOv
 import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayGradleSettingsContributor;
 import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayReadMeContributor;
-import org.apereo.cas.overlay.bootadminserver.contrib.docker.jib.CasSpringBootAdminGradleJibEntrypointContributor;
-import org.apereo.cas.overlay.discoveryserver.buildsystem.CasDiscoveryServerOverlayBuildSystem;
-import org.apereo.cas.overlay.discoveryserver.buildsystem.CasDiscoveryServerOverlayGradleBuild;
-import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayGradleBuildContributor;
-import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayGradlePropertiesContributor;
-import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayGradleSettingsContributor;
-import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayReadMeContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -35,7 +28,6 @@ public class CasSpringBootAdminServerOverlayProjectGenerationConfiguration {
     @Bean
     public ChainingSingleResourceProjectContributor bootAdminOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
-        chain.addContributor(new CasSpringBootAdminGradleJibEntrypointContributor());
         chain.addContributor(new CasSpringBootAdminServerOverlayGradleBuildContributor());
         chain.addContributor(new CasSpringBootAdminServerOverlayGradleSettingsContributor());
         chain.addContributor(new CasSpringBootAdminServerOverlayGradlePropertiesContributor(applicationContext));

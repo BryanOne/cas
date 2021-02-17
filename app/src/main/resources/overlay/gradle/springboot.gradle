@@ -93,8 +93,8 @@ bootWar {
     } else {
         logger.info "WAR artifact is not marked as an executable"
     }
-    archiveName "${casWebApplicationBinaryName}"
-    baseName "cas"
+    archiveName "app.war"
+    baseName "app"
     excludeDevtools = false
 
     entryCompression = ZipEntryCompression.STORED

@@ -32,9 +32,9 @@ On a successful deployment via the following methods, the server will be availab
 Run the server web application as an executable WAR.
 
 ```bash
-java -jar build/libs/casdiscoveryserver.war 
+java -jar build/libs/app.war 
 ```
 
 ## External
 
-Deploy resultant `build/libs/casdiscoveryserver.war` to a servlet container of choice.
+Deploy the binary web application file in `build/libs` after a successful build to a servlet container of choice.
