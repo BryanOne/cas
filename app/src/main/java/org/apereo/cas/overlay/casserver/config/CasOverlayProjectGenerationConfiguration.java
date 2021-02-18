@@ -19,7 +19,6 @@ import org.apereo.cas.overlay.casserver.contrib.CasOverlayConfigurationPropertie
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayLoggingConfigurationContributor;
 import org.apereo.cas.overlay.casserver.contrib.docker.CasOverlayDockerContributor;
 import org.apereo.cas.overlay.casserver.contrib.gradle.CasOverlayGradleSpringBootContributor;
-import org.apereo.cas.overlay.casserver.contrib.gradle.CasOverlayGradleTasksContributor;
 import org.apereo.cas.overlay.casserver.contrib.helm.CasOverlayHelmContributor;
 import org.apereo.cas.overlay.casserver.customize.DefaultDependenciesBuildCustomizer;
 import org.springframework.beans.factory.ObjectProvider;
@@ -53,7 +52,6 @@ public class CasOverlayProjectGenerationConfiguration {
         chain.addContributor(new OverlayGradleBuildContributor(applicationContext));
         chain.addContributor(new CasOverlayConfigurationDirectoriesContributor());
         chain.addContributor(new CasOverlayGradleSpringBootContributor());
-        chain.addContributor(new CasOverlayGradleTasksContributor());
         chain.addContributor(new CasOverlayConfigurationPropertiesContributor(applicationContext));
         chain.addContributor(new CasOverlayLoggingConfigurationContributor());
         return chain;
