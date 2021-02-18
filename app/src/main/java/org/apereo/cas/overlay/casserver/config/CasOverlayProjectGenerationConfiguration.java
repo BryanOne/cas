@@ -56,7 +56,6 @@ public class CasOverlayProjectGenerationConfiguration {
         chain.addContributor(new CasOverlayGradleSpringBootContributor());
         chain.addContributor(new CasOverlayGradleTasksContributor());
         chain.addContributor(new CasOverlayConfigurationPropertiesContributor(applicationContext));
-        chain.addContributor(new OverlayWebXmlContributor());
         chain.addContributor(new CasOverlayLoggingConfigurationContributor());
         return chain;
     }
