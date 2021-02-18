@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 public class CasOverlayConfigurationPropertiesContributor extends TemplatedProjectContributor {
 
     public CasOverlayConfigurationPropertiesContributor(final ApplicationContext applicationContext) {
-        super(applicationContext, "./etc/cas/config/cas.properties", "classpath:/overlay/etc/cas/config/cas.properties");
+        super(applicationContext, "./etc/cas/config/cas.properties", "classpath:/overlay/etc/cas/config/cas.properties.mustache");
     }
 
     @Override

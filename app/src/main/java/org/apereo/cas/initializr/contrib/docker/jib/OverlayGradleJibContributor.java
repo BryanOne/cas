@@ -4,10 +4,10 @@ import io.spring.initializr.generator.project.contributor.SingleResourceProjectC
 
 public class OverlayGradleJibContributor extends SingleResourceProjectContributor {
     public OverlayGradleJibContributor() {
-        this("classpath:common/jib/dockerjib.gradle");
+        this("classpath:common/jib/jib.gradle");
     }
 
     private OverlayGradleJibContributor(String resourcePattern) {
-        super("gradle/dockerjib.gradle", resourcePattern);
+        super("gradle/jib.gradle", resourcePattern);
     }
 }

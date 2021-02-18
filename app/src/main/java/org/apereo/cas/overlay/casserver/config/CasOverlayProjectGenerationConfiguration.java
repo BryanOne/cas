@@ -62,7 +62,7 @@ public class CasOverlayProjectGenerationConfiguration {
     @Bean
     public ProjectContributor overlayProjectReadMeContributor() {
         return new ProjectReadMeContributor(applicationContext)
-                .setAppendFromResource("classpath:overlay/README.md");
+                .setAppendFromResource("classpath:overlay/README.md.mustache");
     }
 
     @Bean

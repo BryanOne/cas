@@ -21,7 +21,7 @@ public class ProjectReadMeContributor extends TemplatedProjectContributor {
     private String appendFromResource;
 
     public ProjectReadMeContributor(final ApplicationContext applicationContext) {
-        super(applicationContext, "./README.md", "classpath:common/README.md");
+        super(applicationContext, "./README.md", "classpath:common/README.md.mustache");
     }
 
     @SneakyThrows

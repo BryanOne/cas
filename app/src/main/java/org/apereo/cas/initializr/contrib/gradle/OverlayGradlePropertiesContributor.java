@@ -13,6 +13,6 @@ import org.springframework.context.ApplicationContext;
 @Accessors(chain = true)
 public class OverlayGradlePropertiesContributor extends TemplatedProjectContributor {
     public OverlayGradlePropertiesContributor(final ApplicationContext applicationContext) {
-        super(applicationContext, "./gradle.properties", "classpath:common/gradle/gradle.properties");
+        super(applicationContext, "./gradle.properties", "classpath:common/gradle/gradle.properties.mustache");
     }
 }

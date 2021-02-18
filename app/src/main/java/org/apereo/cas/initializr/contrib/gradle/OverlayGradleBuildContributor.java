@@ -7,6 +7,6 @@ import org.springframework.context.ApplicationContext;
 @Slf4j
 public class OverlayGradleBuildContributor extends TemplatedProjectContributor {
     public OverlayGradleBuildContributor(final ApplicationContext applicationContext) {
-        super(applicationContext, "./build.gradle", "classpath:common/gradle/build.gradle");
+        super(applicationContext, "./build.gradle", "classpath:common/gradle/build.gradle.mustache");
     }
 }
