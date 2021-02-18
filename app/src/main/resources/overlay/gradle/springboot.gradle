@@ -30,19 +30,6 @@ dependencies {
     bootRunConfig "org.springframework.boot:spring-boot-devtools:${project.springBootVersion}"
 }
 
-sourceSets {
-    bootRunSources {
-        resources {
-            srcDirs new File("//etc/cas/templates/"),
-                    new File("${project.getProjectDir()}/src/main/resources/")
-        }
-    }
-}
-
-bootBuildImage {
-    imageName = "apereo/cas:${casServerVersion}"
-}
-
 bootRun {
     classpath = configurations.bootRunConfig + sourceSets.main.compileClasspath + sourceSets.main.runtimeClasspath
     doFirst {
@@ -80,46 +67,5 @@ bootRun {
     args = appArgList
 }
 
-springBoot {
-    buildInfo()
-    mainClassName = "org.apereo.cas.web.CasWebApplication"
-}
 
-bootWar {
-    def executable = project.hasProperty("executable") && Boolean.valueOf(project.getProperty("executable"))
-    if (executable) {
-        logger.info "Including launch script for executable WAR artifact"
-        launchScript()
-    } else {
-        logger.info "WAR artifact is not marked as an executable"
-    }
-    archiveName "app.war"
-    baseName "app"
-    excludeDevtools = false
 
-    entryCompression = ZipEntryCompression.STORED
-    /*
-        attachClasses = true 
-        classesClassifier = 'classes'
-        archiveClasses = true
-    */
-    overlays {
-        /*
-            https://docs.freefair.io/gradle-plugins/current/reference/#_io_freefair_war_overlay
-            Note: The "excludes" property is only for files in the war dependency.
-            If a jar is excluded from the war, it could be brought back into the final war as a dependency
-            of non-war dependencies. Those should be excluded via normal gradle dependency exclusions.
-        */
-        cas {
-            from "org.apereo.cas:cas-server-webapp${project.appServer}:${casServerVersion}@war"
-            provided = false
-            /*
-            excludes = ["WEB-INF/lib/somejar-1.0*"]
-            enableCompilation = true
-            includes = ["*.xyz"]
-            targetPath = "sub-path/bar"
-            skip = false
-            */
-        }
-    }
-}

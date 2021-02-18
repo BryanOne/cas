@@ -8,11 +8,11 @@ import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import lombok.val;
 import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributor;
 import org.apereo.cas.initializr.contrib.ProjectReadMeContributor;
+import org.apereo.cas.initializr.contrib.gradle.OverlayGradleBuildContributor;
 import org.apereo.cas.initializr.contrib.gradle.OverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.casmgmt.buildsystem.CasManagementOverlayBuildSystem;
 import org.apereo.cas.overlay.casmgmt.buildsystem.CasManagementOverlayGradleBuild;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayConfigurationPropertiesContributor;
-import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayGradleBuildContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayLoggingConfigurationContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayUsersConfigurationContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.docker.CasManagementOverlayDockerContributor;
@@ -47,7 +47,7 @@ public class CasManagementOverlayProjectGenerationConfiguration {
     @Bean
     public ChainingSingleResourceProjectContributor casMgmtOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
-        chain.addContributor(new CasManagementOverlayGradleBuildContributor(applicationContext));
+        chain.addContributor(new OverlayGradleBuildContributor(applicationContext));
         return chain;
     }
 

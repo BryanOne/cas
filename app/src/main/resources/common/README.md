@@ -85,8 +85,26 @@ curl {{initializrUrl}}/actuator/info
 
 On a successful deployment via the following methods, the server will be available at:
 
-* `{{deploymentUrl}}`
+{{#managementServer}}
+* `https://localhost:8443/cas-management`
+{{#managementServer}}
 
+{{#casServer}}
+* `https://localhost:8443/cas`
+{{#casServer}}
+
+{{#springBootAdminServer}}
+* `https://localhost:8444`
+{{#springBootAdminServer}}
+
+{{#configServer}}
+* `https:/localhost:8888/casconfigserver`
+{{#configServer}}
+
+{{#discoveryServer}}
+* `https://localhost:8761`
+{{#discoveryServer}}
+  
 ## Executable WAR
 
 Run the server web application as an executable WAR.

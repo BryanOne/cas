@@ -8,10 +8,10 @@ import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import lombok.val;
 import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributor;
 import org.apereo.cas.initializr.contrib.ProjectReadMeContributor;
+import org.apereo.cas.initializr.contrib.gradle.OverlayGradleBuildContributor;
 import org.apereo.cas.initializr.contrib.gradle.OverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.discoveryserver.buildsystem.CasDiscoveryServerOverlayBuildSystem;
 import org.apereo.cas.overlay.discoveryserver.buildsystem.CasDiscoveryServerOverlayGradleBuild;
-import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayGradleBuildContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -29,11 +29,11 @@ public class CasDiscoveryServerOverlayProjectGenerationConfiguration {
     public ProjectContributor overlayGradlePropertiesContributor() {
         return new OverlayGradlePropertiesContributor(applicationContext);
     }
-    
+
     @Bean
     public ChainingSingleResourceProjectContributor discoveryOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
-        chain.addContributor(new CasDiscoveryServerOverlayGradleBuildContributor());
+        chain.addContributor(new OverlayGradleBuildContributor(applicationContext));
         return chain;
     }
 
@@ -41,7 +41,7 @@ public class CasDiscoveryServerOverlayProjectGenerationConfiguration {
     public ProjectContributor overlayProjectReadMeContributor() {
         return new ProjectReadMeContributor(applicationContext);
     }
-    
+
     @Bean
     public CasDiscoveryServerOverlayGradleBuild gradleBuild(ObjectProvider<BuildCustomizer<CasDiscoveryServerOverlayGradleBuild>> buildCustomizers,
                                                             ObjectProvider<BuildItemResolver> buildItemResolver) {

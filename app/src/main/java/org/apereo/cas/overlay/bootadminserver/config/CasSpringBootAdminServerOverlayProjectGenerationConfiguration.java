@@ -8,10 +8,10 @@ import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import lombok.val;
 import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributor;
 import org.apereo.cas.initializr.contrib.ProjectReadMeContributor;
+import org.apereo.cas.initializr.contrib.gradle.OverlayGradleBuildContributor;
 import org.apereo.cas.initializr.contrib.gradle.OverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.bootadminserver.buildsystem.CasSpringBootAdminServerOverlayBuildSystem;
 import org.apereo.cas.overlay.bootadminserver.buildsystem.CasSpringBootAdminServerOverlayGradleBuild;
-import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayGradleBuildContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -38,7 +38,7 @@ public class CasSpringBootAdminServerOverlayProjectGenerationConfiguration {
     @Bean
     public ChainingSingleResourceProjectContributor bootAdminOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
-        chain.addContributor(new CasSpringBootAdminServerOverlayGradleBuildContributor());
+        chain.addContributor(new OverlayGradleBuildContributor(applicationContext));
         return chain;
     }
 

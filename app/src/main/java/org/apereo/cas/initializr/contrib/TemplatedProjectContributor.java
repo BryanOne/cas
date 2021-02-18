@@ -4,14 +4,20 @@ import com.github.mustachejava.DefaultMustacheFactory;
 import io.spring.initializr.generator.project.ProjectDescription;
 import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import io.spring.initializr.metadata.InitializrMetadataProvider;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apereo.cas.overlay.bootadminserver.buildsystem.CasSpringBootAdminServerOverlayBuildSystem;
 import org.apereo.cas.overlay.casmgmt.buildsystem.CasManagementOverlayBuildSystem;
 import org.apereo.cas.overlay.casserver.buildsystem.CasOverlayBuildSystem;
+import org.apereo.cas.overlay.casserver.buildsystem.CasOverlayGradleBuild;
+import org.apereo.cas.overlay.configserver.buildsystem.CasConfigServerOverlayBuildSystem;
+import org.apereo.cas.overlay.discoveryserver.buildsystem.CasDiscoveryServerOverlayBuildSystem;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.FileCopyUtils;
@@ -27,7 +33,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -118,14 +126,24 @@ public abstract class TemplatedProjectContributor implements ProjectContributor 
             handleApplicationServerType(project, templateVariables);
             templateVariables.put("hasDockerFile", Boolean.TRUE);
         }
-
         if (type.equalsIgnoreCase(CasManagementOverlayBuildSystem.ID)) {
             templateVariables.put("managementServer", Boolean.TRUE);
         }
         if (type.equalsIgnoreCase(CasOverlayBuildSystem.ID)) {
             templateVariables.put("casServer", Boolean.TRUE);
         }
+        if (type.equalsIgnoreCase(CasSpringBootAdminServerOverlayBuildSystem.ID)) {
+            templateVariables.put("springBootAdminServer", Boolean.TRUE);
+        }
+        if (type.equalsIgnoreCase(CasConfigServerOverlayBuildSystem.ID)) {
+            templateVariables.put("configServer", Boolean.TRUE);
+        }
+        if (type.equalsIgnoreCase(CasDiscoveryServerOverlayBuildSystem.ID)) {
+            templateVariables.put("discoveryServer", Boolean.TRUE);
+        }
+
         templateVariables.putAll(getVariables());
+        templateVariables.put("dependencies", handleProjectRequestedDependencies(project));
         return templateVariables;
     }
 
@@ -134,7 +152,27 @@ public abstract class TemplatedProjectContributor implements ProjectContributor 
         return this;
     }
 
+    protected List<CasDependency> handleProjectRequestedDependencies(final ProjectDescription project) {
+        val dependencies = project.getRequestedDependencies()
+                .values()
+                .stream()
+                .filter(dep -> !CasOverlayGradleBuild.WEBAPP_ARTIFACTS.contains(dep.getArtifactId()))
+                .map(dep -> new CasDependency(dep.getGroupId(), dep.getArtifactId()))
+                .collect(Collectors.toList());
+        log.debug("Requested overlay dependencies: {}", dependencies);
+        return dependencies;
+    }
+
     protected Object contributeInternal(ProjectDescription project) {
         return new HashMap<>();
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @ToString
+    public static class CasDependency {
+        private final String groupId;
+
+        private final String artifactId;
     }
 }

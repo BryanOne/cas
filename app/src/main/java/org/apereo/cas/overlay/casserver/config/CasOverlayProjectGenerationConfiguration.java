@@ -8,6 +8,7 @@ import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import lombok.val;
 import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributor;
 import org.apereo.cas.initializr.contrib.ProjectReadMeContributor;
+import org.apereo.cas.initializr.contrib.gradle.OverlayGradleBuildContributor;
 import org.apereo.cas.initializr.contrib.gradle.OverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.casserver.buildsystem.CasOverlayBuildSystem;
 import org.apereo.cas.overlay.casserver.buildsystem.CasOverlayGradleBuild;
@@ -16,9 +17,7 @@ import org.apereo.cas.overlay.casserver.contrib.CasOverlayCasReferenceProperties
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayConfigurationDirectoriesContributor;
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayConfigurationPropertiesContributor;
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayLoggingConfigurationContributor;
-import org.apereo.cas.initializr.contrib.OverlayWebXmlContributor;
 import org.apereo.cas.overlay.casserver.contrib.docker.CasOverlayDockerContributor;
-import org.apereo.cas.overlay.casserver.contrib.gradle.CasOverlayGradleBuildContributor;
 import org.apereo.cas.overlay.casserver.contrib.gradle.CasOverlayGradleSpringBootContributor;
 import org.apereo.cas.overlay.casserver.contrib.gradle.CasOverlayGradleTasksContributor;
 import org.apereo.cas.overlay.casserver.contrib.helm.CasOverlayHelmContributor;
@@ -51,7 +50,7 @@ public class CasOverlayProjectGenerationConfiguration {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new CasOverlayAllReferencePropertiesContributor(applicationContext));
         chain.addContributor(new CasOverlayCasReferencePropertiesContributor(applicationContext));
-        chain.addContributor(new CasOverlayGradleBuildContributor(applicationContext));
+        chain.addContributor(new OverlayGradleBuildContributor(applicationContext));
         chain.addContributor(new CasOverlayConfigurationDirectoriesContributor());
         chain.addContributor(new CasOverlayGradleSpringBootContributor());
         chain.addContributor(new CasOverlayGradleTasksContributor());
