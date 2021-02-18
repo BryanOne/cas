@@ -50,7 +50,7 @@ apply from: rootProject.file("gradle/jib.gradle")
 dependencyManagement {
     imports {
         {{#managementServer}}
-        mavenBom "org.apereo.cas:cas-mgmt-support-bom:{project.'casmgmt.version'}"
+        mavenBom "org.apereo.cas:cas-mgmt-support-bom:${project.'casmgmt.version'}"
         {{/managementServer}}
         
         {{^managementServer}}
