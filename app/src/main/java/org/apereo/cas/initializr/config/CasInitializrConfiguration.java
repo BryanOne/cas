@@ -10,6 +10,7 @@ import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributo
 import org.apereo.cas.initializr.contrib.IgnoreRulesContributor;
 import org.apereo.cas.initializr.contrib.OverlayOverrideConfigurationContributor;
 import org.apereo.cas.initializr.contrib.OverlaySpringFactoriesContributor;
+import org.apereo.cas.initializr.contrib.OverlayWebXmlContributor;
 import org.apereo.cas.initializr.contrib.ProjectAssetsUndoContributor;
 import org.apereo.cas.initializr.contrib.ProjectLicenseContributor;
 import org.apereo.cas.initializr.contrib.docker.jib.OverlayGradleJibContributor;
@@ -66,6 +67,7 @@ public class CasInitializrConfiguration {
     public ChainingSingleResourceProjectContributor overlayGradleBuildContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new OverlayGradleSettingsContributor(applicationContext));
+        chain.addContributor(new OverlayWebXmlContributor());
         return chain;
     }
 

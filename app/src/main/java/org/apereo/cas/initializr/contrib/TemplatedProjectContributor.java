@@ -109,7 +109,7 @@ public abstract class TemplatedProjectContributor implements ProjectContributor 
 
         templateVariables.put("casVersion", boms.get("cas-bom").getVersion());
         templateVariables.put("casMgmtVersion", boms.get("cas-mgmt-bom").getVersion());
-        templateVariables.put("springBootVersion", variables.get("bootVersion"));
+        templateVariables.put("springBootVersion", templateVariables.get("bootVersion"));
 
         templateVariables.put("initializrUrl", generateAppUrl());
 
