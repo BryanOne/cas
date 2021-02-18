@@ -11,7 +11,6 @@ import org.apereo.cas.overlay.casmgmt.buildsystem.CasManagementOverlayGradleBuil
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayConfigurationPropertiesContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayGradleBuildContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayGradlePropertiesContributor;
-import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayGradleSettingsContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayLoggingConfigurationContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayReadMeContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayUsersConfigurationContributor;
@@ -39,7 +38,6 @@ public class CasManagementOverlayProjectGenerationConfiguration {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new CasManagementOverlayGradleBuildContributor(applicationContext));
         chain.addContributor(new CasManagementOverlayGradlePropertiesContributor(applicationContext));
-        chain.addContributor(new CasManagementOverlayGradleSettingsContributor());
         chain.addContributor(new CasManagementOverlayReadMeContributor(applicationContext));
         return chain;
     }

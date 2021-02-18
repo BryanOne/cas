@@ -16,6 +16,7 @@ import org.apereo.cas.initializr.contrib.docker.jib.OverlayGradleJibContributor;
 import org.apereo.cas.initializr.contrib.docker.jib.OverlayGradleJibEntrypointContributor;
 import org.apereo.cas.initializr.contrib.gradle.GradleWrapperConfigurationContributor;
 import org.apereo.cas.initializr.contrib.gradle.GradleWrapperExecutablesContributor;
+import org.apereo.cas.initializr.contrib.gradle.OverlayGradleSettingsContributor;
 import org.apereo.cas.initializr.info.DependencyAliasesInfoContributor;
 import org.apereo.cas.initializr.metadata.CasOverlayInitializrMetadataUpdateStrategy;
 import org.apereo.cas.initializr.rate.RateLimitInterceptor;
@@ -58,6 +59,13 @@ public class CasInitializrConfiguration {
         var chain = new ChainingMultipleResourcesProjectContributor();
         chain.addContributor(new GradleWrapperConfigurationContributor());
         chain.addContributor(new GradleWrapperExecutablesContributor());
+        return chain;
+    }
+
+    @Bean
+    public ChainingSingleResourceProjectContributor overlayGradleBuildContributor() {
+        var chain = new ChainingSingleResourceProjectContributor();
+        chain.addContributor(new OverlayGradleSettingsContributor(applicationContext));
         return chain;
     }
 

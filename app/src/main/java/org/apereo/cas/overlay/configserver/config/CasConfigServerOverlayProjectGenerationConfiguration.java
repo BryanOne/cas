@@ -10,7 +10,6 @@ import org.apereo.cas.overlay.configserver.buildsystem.CasConfigServerOverlayBui
 import org.apereo.cas.overlay.configserver.buildsystem.CasConfigServerOverlayGradleBuild;
 import org.apereo.cas.overlay.configserver.contrib.CasConfigServerOverlayGradleBuildContributor;
 import org.apereo.cas.overlay.configserver.contrib.CasConfigServerOverlayGradlePropertiesContributor;
-import org.apereo.cas.overlay.configserver.contrib.CasConfigServerOverlayGradleSettingsContributor;
 import org.apereo.cas.overlay.configserver.contrib.CasConfigServerOverlayReadMeContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ public class CasConfigServerOverlayProjectGenerationConfiguration {
     public ChainingSingleResourceProjectContributor configServerOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new CasConfigServerOverlayGradleBuildContributor());
-        chain.addContributor(new CasConfigServerOverlayGradleSettingsContributor());
         chain.addContributor(new CasConfigServerOverlayGradlePropertiesContributor(applicationContext));
         chain.addContributor(new CasConfigServerOverlayReadMeContributor(applicationContext));
         return chain;

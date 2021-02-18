@@ -10,7 +10,6 @@ import org.apereo.cas.overlay.bootadminserver.buildsystem.CasSpringBootAdminServ
 import org.apereo.cas.overlay.bootadminserver.buildsystem.CasSpringBootAdminServerOverlayGradleBuild;
 import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayGradleBuildContributor;
 import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayGradlePropertiesContributor;
-import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayGradleSettingsContributor;
 import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayReadMeContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ public class CasSpringBootAdminServerOverlayProjectGenerationConfiguration {
     public ChainingSingleResourceProjectContributor bootAdminOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new CasSpringBootAdminServerOverlayGradleBuildContributor());
-        chain.addContributor(new CasSpringBootAdminServerOverlayGradleSettingsContributor());
         chain.addContributor(new CasSpringBootAdminServerOverlayGradlePropertiesContributor(applicationContext));
         chain.addContributor(new CasSpringBootAdminServerOverlayReadMeContributor(applicationContext));
         return chain;

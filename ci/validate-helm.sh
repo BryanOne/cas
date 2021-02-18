@@ -91,7 +91,7 @@ echo "CAS Server Logs..."
 kubectl logs cas-server-0 --namespace $NAMESPACE | tee cas.out
 echo "CAS Boot Admin Server Logs..."
 kubectl logs -l cas.server-type=bootadmin --tail=-1 --namespace $NAMESPACE | tee cas-bootadmin.out
-echo "CAS Boot Admin Server Logs..."
+echo "CAS Management Server Logs..."
 kubectl logs -l cas.server-type=mgmt --tail=-1 --namespace $NAMESPACE | tee cas-mgmt.out
 echo "Checking cas server log for startup message"
 grep "Started CasWebApplication" cas.out

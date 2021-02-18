@@ -10,7 +10,6 @@ import org.apereo.cas.overlay.discoveryserver.buildsystem.CasDiscoveryServerOver
 import org.apereo.cas.overlay.discoveryserver.buildsystem.CasDiscoveryServerOverlayGradleBuild;
 import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayGradleBuildContributor;
 import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayGradlePropertiesContributor;
-import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayGradleSettingsContributor;
 import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayReadMeContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ public class CasDiscoveryServerOverlayProjectGenerationConfiguration {
     public ChainingSingleResourceProjectContributor discoveryOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new CasDiscoveryServerOverlayGradleBuildContributor());
-        chain.addContributor(new CasDiscoveryServerOverlayGradleSettingsContributor());
         chain.addContributor(new CasDiscoveryServerOverlayGradlePropertiesContributor(applicationContext));
         chain.addContributor(new CasDiscoveryServerOverlayReadMeContributor(applicationContext));
         return chain;
