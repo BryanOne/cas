@@ -66,7 +66,7 @@ bootRun {
 
 
 processResources {
-    filesMatching(['**/*.yml', '**/*.properties', '**/*.md']) {
+    filesMatching(['**/*.yml', '**/*.properties', '**/*.md', '**/*.mustache']) {
         filter org.apache.tools.ant.filters.ReplaceTokens, tokens: [
                 "javaVersion"                            : project.sourceCompatibility,
 
