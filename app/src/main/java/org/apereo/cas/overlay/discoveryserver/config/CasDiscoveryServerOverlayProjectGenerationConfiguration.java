@@ -7,11 +7,11 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import lombok.val;
 import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributor;
+import org.apereo.cas.initializr.contrib.ProjectReadMeContributor;
 import org.apereo.cas.initializr.contrib.gradle.OverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.discoveryserver.buildsystem.CasDiscoveryServerOverlayBuildSystem;
 import org.apereo.cas.overlay.discoveryserver.buildsystem.CasDiscoveryServerOverlayGradleBuild;
 import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayGradleBuildContributor;
-import org.apereo.cas.overlay.discoveryserver.contrib.CasDiscoveryServerOverlayReadMeContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -34,10 +34,14 @@ public class CasDiscoveryServerOverlayProjectGenerationConfiguration {
     public ChainingSingleResourceProjectContributor discoveryOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new CasDiscoveryServerOverlayGradleBuildContributor());
-        chain.addContributor(new CasDiscoveryServerOverlayReadMeContributor(applicationContext));
         return chain;
     }
 
+    @Bean
+    public ProjectContributor overlayProjectReadMeContributor() {
+        return new ProjectReadMeContributor(applicationContext);
+    }
+    
     @Bean
     public CasDiscoveryServerOverlayGradleBuild gradleBuild(ObjectProvider<BuildCustomizer<CasDiscoveryServerOverlayGradleBuild>> buildCustomizers,
                                                             ObjectProvider<BuildItemResolver> buildItemResolver) {

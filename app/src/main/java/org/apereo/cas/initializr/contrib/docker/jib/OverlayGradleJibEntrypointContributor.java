@@ -1,8 +1,5 @@
 package org.apereo.cas.initializr.contrib.docker.jib;
 
-import io.spring.initializr.generator.project.ProjectDescription;
-import io.spring.initializr.metadata.InitializrMetadataProvider;
-import lombok.val;
 import org.apereo.cas.initializr.contrib.TemplatedProjectContributor;
 import org.springframework.context.ApplicationContext;
 
@@ -23,11 +20,4 @@ public class OverlayGradleJibEntrypointContributor extends TemplatedProjectContr
         output.toFile().setExecutable(true);
     }
 
-    @Override
-    protected Object contributeInternal(ProjectDescription project) {
-        val provider = applicationContext.getBean(InitializrMetadataProvider.class);
-        val defaults = provider.get().defaults();
-        defaults.put("casVersion", provider.get().getConfiguration().getEnv().getBoms().get("cas-bom").getVersion());
-        return defaults;
-    }
 }

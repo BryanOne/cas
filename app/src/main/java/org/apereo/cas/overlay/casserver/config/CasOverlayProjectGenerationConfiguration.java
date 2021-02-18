@@ -7,6 +7,7 @@ import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import lombok.val;
 import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributor;
+import org.apereo.cas.initializr.contrib.ProjectReadMeContributor;
 import org.apereo.cas.initializr.contrib.gradle.OverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.casserver.buildsystem.CasOverlayBuildSystem;
 import org.apereo.cas.overlay.casserver.buildsystem.CasOverlayGradleBuild;
@@ -15,7 +16,6 @@ import org.apereo.cas.overlay.casserver.contrib.CasOverlayCasReferenceProperties
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayConfigurationDirectoriesContributor;
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayConfigurationPropertiesContributor;
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayLoggingConfigurationContributor;
-import org.apereo.cas.overlay.casserver.contrib.CasOverlayReadMeContributor;
 import org.apereo.cas.overlay.casserver.contrib.CasOverlayWebXmlContributor;
 import org.apereo.cas.overlay.casserver.contrib.docker.CasOverlayDockerContributor;
 import org.apereo.cas.overlay.casserver.contrib.gradle.CasOverlayGradleBuildContributor;
@@ -58,15 +58,18 @@ public class CasOverlayProjectGenerationConfiguration {
         chain.addContributor(new CasOverlayConfigurationPropertiesContributor(applicationContext));
         chain.addContributor(new CasOverlayWebXmlContributor());
         chain.addContributor(new CasOverlayLoggingConfigurationContributor());
-        chain.addContributor(new CasOverlayReadMeContributor(applicationContext));
         return chain;
     }
 
     @Bean
+    public ProjectContributor overlayProjectReadMeContributor() {
+        return new ProjectReadMeContributor(applicationContext)
+                .setAppendFromResource("classpath:overlay/README.md");
+    }
+
+    @Bean
     public ProjectContributor overlayGradlePropertiesContributor() {
-        return new OverlayGradlePropertiesContributor(applicationContext)
-                .setConfigureApplicationServerType(true)
-                .putVariable("casServer", Boolean.TRUE);
+        return new OverlayGradlePropertiesContributor(applicationContext);
     }
 
     @Bean
