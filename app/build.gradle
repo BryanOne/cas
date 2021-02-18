@@ -78,8 +78,10 @@ processResources {
                 "casMgmtSpringBootVersion"               : project.property("casMgmtSpringBootVersion"),
                 "gradleDependencyManagementPluginVersion": project.property("gradleDependencyManagementPluginVersion"),
                 "gradleFreeFairPluginVersion"            : project.property("gradleFreeFairPluginVersion"),
+                "gradleDownloadTaskPluginVersion"        : project.property("gradleDownloadTaskPluginVersion"),
                 "tomcatVersion"                          : project.property("tomcatVersion"),
                 "jibVersion"                             : project.property("jibVersion")
+                
         ]
     }
 }

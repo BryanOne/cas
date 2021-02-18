@@ -3,13 +3,14 @@ package org.apereo.cas.overlay.bootadminserver.config;
 import io.spring.initializr.generator.buildsystem.BuildItemResolver;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
+import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import lombok.val;
 import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributor;
+import org.apereo.cas.initializr.contrib.gradle.OverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.bootadminserver.buildsystem.CasSpringBootAdminServerOverlayBuildSystem;
 import org.apereo.cas.overlay.bootadminserver.buildsystem.CasSpringBootAdminServerOverlayGradleBuild;
 import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayGradleBuildContributor;
-import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.bootadminserver.contrib.CasSpringBootAdminServerOverlayReadMeContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,14 @@ public class CasSpringBootAdminServerOverlayProjectGenerationConfiguration {
     private ConfigurableApplicationContext applicationContext;
 
     @Bean
+    public ProjectContributor overlayGradlePropertiesContributor() {
+        return new OverlayGradlePropertiesContributor(applicationContext);
+    }
+
+    @Bean
     public ChainingSingleResourceProjectContributor bootAdminOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new CasSpringBootAdminServerOverlayGradleBuildContributor());
-        chain.addContributor(new CasSpringBootAdminServerOverlayGradlePropertiesContributor(applicationContext));
         chain.addContributor(new CasSpringBootAdminServerOverlayReadMeContributor(applicationContext));
         return chain;
     }

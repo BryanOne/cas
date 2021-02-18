@@ -3,14 +3,15 @@ package org.apereo.cas.overlay.casmgmt.config;
 import io.spring.initializr.generator.buildsystem.BuildItemResolver;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
+import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import lombok.val;
 import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributor;
+import org.apereo.cas.initializr.contrib.gradle.OverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.casmgmt.buildsystem.CasManagementOverlayBuildSystem;
 import org.apereo.cas.overlay.casmgmt.buildsystem.CasManagementOverlayGradleBuild;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayConfigurationPropertiesContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayGradleBuildContributor;
-import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayLoggingConfigurationContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayReadMeContributor;
 import org.apereo.cas.overlay.casmgmt.contrib.CasManagementOverlayUsersConfigurationContributor;
@@ -29,6 +30,13 @@ public class CasManagementOverlayProjectGenerationConfiguration {
     private ConfigurableApplicationContext applicationContext;
 
     @Bean
+    public ProjectContributor overlayGradlePropertiesContributor() {
+        return new OverlayGradlePropertiesContributor(applicationContext)
+                .setConfigureApplicationServerType(true)
+                .putVariable("managementServer", Boolean.TRUE);
+    }
+
+    @Bean
     public CasManagementOverlayDockerContributor casMgmtOverlayDockerContributor() {
         return new CasManagementOverlayDockerContributor();
     }
@@ -37,7 +45,6 @@ public class CasManagementOverlayProjectGenerationConfiguration {
     public ChainingSingleResourceProjectContributor casMgmtOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new CasManagementOverlayGradleBuildContributor(applicationContext));
-        chain.addContributor(new CasManagementOverlayGradlePropertiesContributor(applicationContext));
         chain.addContributor(new CasManagementOverlayReadMeContributor(applicationContext));
         return chain;
     }

@@ -3,13 +3,14 @@ package org.apereo.cas.overlay.configserver.config;
 import io.spring.initializr.generator.buildsystem.BuildItemResolver;
 import io.spring.initializr.generator.condition.ConditionalOnBuildSystem;
 import io.spring.initializr.generator.project.ProjectGenerationConfiguration;
+import io.spring.initializr.generator.project.contributor.ProjectContributor;
 import io.spring.initializr.generator.spring.build.BuildCustomizer;
 import lombok.val;
 import org.apereo.cas.initializr.contrib.ChainingSingleResourceProjectContributor;
+import org.apereo.cas.initializr.contrib.gradle.OverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.configserver.buildsystem.CasConfigServerOverlayBuildSystem;
 import org.apereo.cas.overlay.configserver.buildsystem.CasConfigServerOverlayGradleBuild;
 import org.apereo.cas.overlay.configserver.contrib.CasConfigServerOverlayGradleBuildContributor;
-import org.apereo.cas.overlay.configserver.contrib.CasConfigServerOverlayGradlePropertiesContributor;
 import org.apereo.cas.overlay.configserver.contrib.CasConfigServerOverlayReadMeContributor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,14 @@ public class CasConfigServerOverlayProjectGenerationConfiguration {
     private ConfigurableApplicationContext applicationContext;
 
     @Bean
+    public ProjectContributor overlayGradlePropertiesContributor() {
+        return new OverlayGradlePropertiesContributor(applicationContext);
+    }
+
+    @Bean
     public ChainingSingleResourceProjectContributor configServerOverlayGradleConfigurationContributor() {
         var chain = new ChainingSingleResourceProjectContributor();
         chain.addContributor(new CasConfigServerOverlayGradleBuildContributor());
-        chain.addContributor(new CasConfigServerOverlayGradlePropertiesContributor(applicationContext));
         chain.addContributor(new CasConfigServerOverlayReadMeContributor(applicationContext));
         return chain;
     }
