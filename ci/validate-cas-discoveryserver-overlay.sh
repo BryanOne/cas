@@ -48,3 +48,5 @@ else
     echo "Failed to deploy the web application with status $rc."
     exit 1
 fi
+
+publishDockerImage

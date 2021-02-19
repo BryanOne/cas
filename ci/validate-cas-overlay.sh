@@ -43,6 +43,8 @@ echo "Building Docker image with Jib"
 chmod -R 777 ./*.sh >/dev/null 2>&1
 ./gradlew jibDockerBuild
 
+publishDockerImage
+
 echo "Downloading Shell"
 ./gradlew downloadShell
 
