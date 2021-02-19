@@ -22,7 +22,6 @@ ${CATALINA_HOME}/bin/shutdown.sh & >/dev/null 2>&1
 kill -9 $pid
 if [ "$rc" == 200 ]; then
     echo "Deployed the web application successfully."
-    exit 0
 else
     echo "Failed to deploy the web application with status $rc."
     exit 1
@@ -41,7 +40,7 @@ echo -e "\n\nReady!"
 kill -9 $pid
 
 echo "Building Docker image with Jib"
-chmod -R 777 ./*.sh
+chmod -R 777 ./*.sh >/dev/null 2>&1
 ./gradlew jibDockerBuild
 
 echo "Downloading Shell"
