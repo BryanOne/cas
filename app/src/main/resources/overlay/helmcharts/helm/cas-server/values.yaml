@@ -15,16 +15,16 @@ image:
   tag: "latest"
 
 bootadminimage:
-  registry: "docker.io"
-  repository: "hdeadman/cas-bootadmin-server"
+  registry: ""
+  repository: "apereo/cas-bootadmin-server"
   pullPolicy: IfNotPresent
   tag: "latest"
 
 mgmtimage:
-  registry: "docker.io"
+  registry: ""
   repository: "apereo/cas-management"
   pullPolicy: IfNotPresent
-  tag: "v6.3.0"
+  tag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
