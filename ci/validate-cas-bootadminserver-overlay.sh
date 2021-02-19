@@ -49,5 +49,4 @@ else
     exit 1
 fi
 
-echo "Publishing Docker image"
 publishDockerImage
