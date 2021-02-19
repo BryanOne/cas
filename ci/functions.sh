@@ -15,12 +15,12 @@ function downloadTomcat() {
 }
 
 function publishDockerImage() {
-  echo "Publishing Docker image by @${DOCKER_USER}"
-  if [ -z "$DOCKER_USER" ] && [ -z "$DOCKER_PWD" ]; then
+  echo -e "\nPublishing Docker image...\n"
+  if [ -n "$DOCKER_USER" ] && [ -n "$DOCKER_PWD" ]; then
     echo "Logging into Docker..."
     echo "${DOCKER_PWD}" | docker login --username "$DOCKER_USER" --password-stdin
     containerImageCoords=(`./gradlew containerImageCoords --q`)
-    echo "Pushing Docker image ${containerImageCoords}"
+    echo "Pushing Docker image [${containerImageCoords}]"
     docker push "${containerImageCoords}"
   else
     echo -e "\nNo credentials are defined to publish Docker image\n"
