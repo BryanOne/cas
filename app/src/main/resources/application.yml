@@ -63,18 +63,18 @@ initializr:
       action: /starter.tgz
       
     - name: CAS Management Overlay Gradle Project Zip
-      id: cas-mgmt-overlay
+      id: cas-management-overlay
       description: Generate a Gradle-based project as a zip file
       tags:
-        build: cas-mgmt-overlay
+        build: cas-management-overlay
         format: project
       default: true
       action: /starter.zip
     - name: CAS Management Overlay Gradle Project TGZ
-      id: cas-mgmt-overlay
+      id: cas-management-overlay
       description: Generate a Gradle-based project as a tgz file
       tags:
-        build: cas-mgmt-overlay
+        build: cas-management-overlay
         format: project
       default: false
       action: /starter.tgz

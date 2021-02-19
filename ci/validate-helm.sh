@@ -41,7 +41,7 @@ buildAndImportImage cas-overlay core,bootadmin,metrics,gitsvc,jsonsvc
 buildAndImportImage cas-bootadmin-server-overlay
 buildAndImportImage cas-config-server-overlay
 buildAndImportImage cas-discovery-server-overlay
-buildAndImportImage cas-mgmt-overlay
+buildAndImportImage cas-management-overlay
 
 echo Killing initializer pid $pid
 kill -9 $pid &> /dev/null

@@ -12,6 +12,7 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.overlay.bootadminserver.buildsystem.CasSpringBootAdminServerOverlayBuildSystem;
 import org.apereo.cas.overlay.casmgmt.buildsystem.CasManagementOverlayBuildSystem;
 import org.apereo.cas.overlay.casserver.buildsystem.CasOverlayBuildSystem;
@@ -119,9 +120,11 @@ public abstract class TemplatedProjectContributor implements ProjectContributor 
         templateVariables.put("casMgmtVersion", boms.get("cas-mgmt-bom").getVersion());
         templateVariables.put("springBootVersion", templateVariables.get("bootVersion"));
 
-        templateVariables.put("initializrUrl", generateAppUrl());
-
         val type = project.getBuildSystem().id();
+        templateVariables.put("buildSystemId", type);
+        templateVariables.put("containerImageName", StringUtils.remove(type, "-overlay"));
+
+        templateVariables.put("initializrUrl", generateAppUrl());
         if (type.equalsIgnoreCase(CasOverlayBuildSystem.ID) || type.equalsIgnoreCase(CasManagementOverlayBuildSystem.ID)) {
             handleApplicationServerType(project, templateVariables);
             templateVariables.put("hasDockerFile", Boolean.TRUE);

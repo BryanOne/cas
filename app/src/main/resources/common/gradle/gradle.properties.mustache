@@ -1,34 +1,45 @@
 {{#managementServer}}
+# The version of this overlay project
 version={{casMgmtVersion}}
+
+# CAS Management version
 casmgmt.version={{casMgmtVersion}}
+
+# CAS server version
 cas.version=@casMgmtCasVersion@
 springBootVersion=@casMgmtSpringBootVersion@
 {{/managementServer}}
 
 {{^managementServer}}
+# The version of this overlay project
 version={{casVersion}}
+
+#CAS server version
 cas.version={{casVersion}}
 springBootVersion={{springBootVersion}}
 {{/managementServer}}
 
 group={{groupId}}
-artifactId={{type}}
-
+artifactId={{buildSystemId}}
 sourceCompatibility={{javaVersion}}
 targetCompatibility={{javaVersion}}
 
 gradleFreeFairPluginVersion=@gradleFreeFairPluginVersion@
 gradleDependencyManagementPluginVersion=@gradleDependencyManagementPluginVersion@
 
+# Used to build docker images
 jibVersion=@jibVersion@
 
-imageorg=apereo
-imagerepo={{type}}
+# Specify the coordinates of the container image to build via jib
+containerImageOrg=apereo
+containerImageName={{containerImageName}}
 
 baseDockerImage=adoptopenjdk/openjdk11:alpine-jre
 allowInsecureRegistries=false
 
 # Include launch script for executable WAR artifact
+# Setting this to true allows the final web application
+# to be fully executable on its own
 executable=false
 
 {{#appServer}}
@@ -39,7 +50,9 @@ executable=false
 appServer={{appServer}}
 {{/appServer}}
 
-# Location to generate keystore
+# Settings to generate keystore
+# used by the build to assist with creating
+# self-signed certificates for https endpoints
 certDir=/etc/cas
 serverKeystore=thekeystore
 exportedServerCert=cas.crt

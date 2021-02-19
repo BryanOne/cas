@@ -156,6 +156,12 @@ task casVersion(group: "CAS", description: "Display the current CAS version") {
     }
 }
 
+task containerImageCoords(group: "CAS", description: "Display the coordinates for the container image") {
+    doFirst {
+         println "${project.'containerImageOrg'}/${project.'containerImageName'}:${project.version}"
+    }
+}
+
 task createKeystore(group: "CAS", description: "Create CAS keystore") {
     doFirst {
         def certDir = project.getProperty("certDir")
@@ -465,7 +471,7 @@ java {
 }
 
 bootBuildImage {
-    imageName = "${project.'imageorg'}/${project.'imagerepo'}:${project.version}"
+    imageName = "${project.'containerImageOrg'}/${project.'containerImageName'}:${project.version}"
 }
 
 

@@ -12,4 +12,4 @@ fi
 
 echo "Pushing CAS docker image tagged as $imageTag to apereo/cas..."
 docker push apereo/cas:"$imageTag" \
-	&& echo "Pushed apereo/cas:$imageTag successfully.";
+  && echo "Pushed apereo/cas:$imageTag successfully.";
