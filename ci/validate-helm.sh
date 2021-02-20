@@ -47,7 +47,7 @@ echo Killing initializer pid $pid
 kill -9 $pid &> /dev/null
 
 cd tmp/cas-overlay
-imageTag=(v$(./gradlew casVersion --q))
+imageTag=$(./gradlew casVersion --q)
 echo "Image tag is ${imageTag}"
 
 cd helm
@@ -97,7 +97,7 @@ helm delete cas-server --namespace $NAMESPACE || true
 
 echo "Install cas-server helm chart"
 echo "Using local jib image imported into k3s"
-helm upgrade --install cas-server --namespace $NAMESPACE --set image.pullPolicy=Never --set image.tag="${imageTag}" ./cas-server
+helm upgrade --install cas-server --namespace $NAMESPACE --set image.pullPolicy=Never --set bootadminimage.pullPolicy=Never --set mgmtimage.pullPolicy=Never --set image.tag="${imageTag}" ./cas-server
 
 echo "Waiting for startup"
 kubectl wait --for=condition=ready --timeout=150s --namespace $NAMESPACE pod cas-server-0 || true
