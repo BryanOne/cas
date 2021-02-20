@@ -18,7 +18,7 @@ function buildAndImportImage() {
   # create project dir from initializer with support boot admin, metrics, and git service registry
   echo "Creating overlay of type: ${type} with dependencies: ${dependencies} in folder $(pwd)"
   echo "Running: curl http://localhost:8080/starter.tgz -d $postdata"
-  curl http://localhost:8080/starter.tgz -d $postdata | tar -xzvf -
+  curl http://localhost:8080/starter.tgz -d $postdata | tar -xzf -
   echo
   echo "Building War and Jib Docker Image for ${type}"
   ./gradlew clean build jibBuildTar --refresh-dependencies
@@ -59,13 +59,25 @@ if [[ $NAMESPACE != "default" ]]; then
 fi
 
 echo "Creating Keystore and secret for keystore"
-./create-cas-server-keystore-secret.sh $NAMESPACE
+./create-cas-server-keystore-secret.sh $NAMESPACE > tmp.out 2>&1
+if [[ $? -ne 0 ]]; then
+  cat tmp.out
+fi
+rm tmp.out
 
 echo "Creating tls secret for ingress to use"
-./create-ingress-tls.sh $NAMESPACE
+./create-ingress-tls.sh $NAMESPACE > tmp.out 2>&1
+if [[ $? -ne 0 ]]; then
+  cat tmp.out
+fi
+rm tmp.out
 
 echo "Creating truststore with server/ingress certs and put in configmap"
-./create-truststore.sh $NAMESPACE
+./create-truststore.sh $NAMESPACE > tmp.out 2>&1
+if [[ $? -ne 0 ]]; then
+  cat tmp.out
+fi
+rm tmp.out
 
 # Set KUBECONFIG for helm
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -88,7 +100,7 @@ helm upgrade --install --namespace ingress-nginx ingress-nginx ingress-nginx/ing
   --set controller.config.proxy-buffer-size=16k
 
 kubectl wait --namespace ingress-nginx \
-  --for=condition=ready pod \
+  --for condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=120s
 
@@ -102,11 +114,13 @@ helm upgrade --install cas-server --namespace $NAMESPACE --set image.pullPolicy=
 # make sure resources are created before waiting on their status
 sleep 30
 
+set +e
 echo "Waiting for startup $(date)"
-kubectl wait --for=condition=ready --timeout=180s --namespace $NAMESPACE pod cas-server-0 || true
-kubectl wait --for=condition=ready --timeout=180s --namespace $NAMESPACE pod -l cas.server-type=bootadmin || true
-kubectl wait --for=condition=ready --timeout=180s --namespace $NAMESPACE pod -l cas.server-type=mgmt || true
+kubectl wait --for condition=ready --timeout=180s --namespace $NAMESPACE pod cas-server-0
+kubectl wait --for condition=ready --timeout=180s --namespace $NAMESPACE pod -l cas.server-type=bootadmin
+kubectl wait --for condition=ready --timeout=180s --namespace $NAMESPACE pod -l cas.server-type=mgmt
 echo "Done waiting for startup $(date)"
+set -e
 
 kubectl rollout --namespace $NAMESPACE status deploy cas-server-boot-admin
 kubectl rollout --namespace $NAMESPACE status deploy cas-server-mgmt
