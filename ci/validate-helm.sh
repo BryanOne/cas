@@ -99,15 +99,18 @@ echo "Install cas-server helm chart"
 echo "Using local jib image imported into k3s"
 helm upgrade --install cas-server --namespace $NAMESPACE --set image.pullPolicy=Never --set bootadminimage.pullPolicy=Never --set mgmtimage.pullPolicy=Never --set image.tag="${imageTag}" ./cas-server
 
-echo "Waiting for startup"
-kubectl wait --for=condition=ready --timeout=150s --namespace $NAMESPACE pod cas-server-0 || true
-kubectl wait --for=condition=available --timeout=150s --namespace $NAMESPACE deployment cas-server-boot-admin || true
-kubectl wait --for=condition=available --timeout=150s --namespace $NAMESPACE deployment cas-server-mgmt || true
+echo "Waiting for startup $(date)"
+kubectl wait --for=condition=ready --timeout=180s --namespace $NAMESPACE pod cas-server-0 || true
+kubectl wait --for=condition=ready --timeout=180s --namespace $NAMESPACE pod -l cas.server-type=bootadmin || true
+kubectl wait --for=condition=ready --timeout=180s --namespace $NAMESPACE pod -l cas.server-type=mgmt || true
+echo "Done waiting for startup $(date)"
 
 echo "Describing cas-server pod"
 kubectl describe pod --namespace $NAMESPACE cas-server-0
 echo "Describing cas bootadmin pod"
 kubectl describe pod --namespace $NAMESPACE -l cas.server-type=bootadmin
+echo "Describing cas mgmt pod"
+kubectl describe pod --namespace $NAMESPACE -l cas.server-type=mgmt
 
 echo "Pod Status:"
 kubectl get pods --namespace $NAMESPACE
