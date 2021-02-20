@@ -102,6 +102,7 @@ helm upgrade --install cas-server --namespace $NAMESPACE --set image.pullPolicy=
 echo "Waiting for startup"
 kubectl wait --for=condition=ready --timeout=150s --namespace $NAMESPACE pod cas-server-0 || true
 kubectl wait --for=condition=available --timeout=150s --namespace $NAMESPACE deployment cas-server-boot-admin || true
+kubectl wait --for=condition=available --timeout=150s --namespace $NAMESPACE deployment cas-server-mgmt || true
 
 echo "Describing cas-server pod"
 kubectl describe pod --namespace $NAMESPACE cas-server-0
