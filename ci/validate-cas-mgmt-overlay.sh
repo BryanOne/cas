@@ -8,7 +8,7 @@ sleep 15
 rm -Rf tmp &> /dev/null
 mkdir tmp
 cd tmp
-curl http://localhost:8080/starter.tgz -d type=cas-management-overlay | tar -xzvf -
+curl http://localhost:8080/starter.tgz -d type=cas-management-overlay -d dependencies="jpasvc" | tar -xzvf -
 kill -9 $pid
 
 echo "Building CAS Mgmt Overlay"
