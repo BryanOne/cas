@@ -18,8 +18,9 @@ public class X509SubjectDNPrincipalResolver extends AbstractX509PrincipalResolve
     private final String subjectDnFormat;
 
     public X509SubjectDNPrincipalResolver(final PrincipalResolutionContext context,
-                                          final String subjectDnFormat) {
-        super(context);
+                                          final String subjectDnFormat,
+                                          final X509AttributeExtractor x509AttributeExtractor) {
+        super(context, x509AttributeExtractor);
         this.subjectDnFormat = subjectDnFormat;
     }
 

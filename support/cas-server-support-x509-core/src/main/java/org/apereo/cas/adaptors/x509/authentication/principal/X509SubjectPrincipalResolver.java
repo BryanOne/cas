@@ -67,8 +67,9 @@ public class X509SubjectPrincipalResolver extends AbstractX509PrincipalResolver 
      *                   <li>ST</li><li>UID</li><li>UNIQUEIDENTIFIER</li></ul>
      *                   For a complete list of supported attributes, see {@link org.cryptacular.x509.dn.StandardAttributeType}.
      */
-    public X509SubjectPrincipalResolver(final PrincipalResolutionContext context, final String descriptor) {
-        super(context);
+    public X509SubjectPrincipalResolver(final PrincipalResolutionContext context, final String descriptor,
+                                        final X509AttributeExtractor x509AttributeExtractor) {
+        super(context, x509AttributeExtractor);
         this.descriptor = descriptor;
     }
 

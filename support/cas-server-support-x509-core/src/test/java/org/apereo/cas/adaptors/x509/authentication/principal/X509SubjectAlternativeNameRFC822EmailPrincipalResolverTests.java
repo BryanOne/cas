@@ -95,7 +95,8 @@ public class X509SubjectAlternativeNameRFC822EmailPrincipalResolverTests {
             .activeAttributeRepositoryIdentifiers(CollectionUtils.wrapSet(IPersonAttributeDao.WILDCARD))
             .build();
 
-        val resolver = new X509SubjectAlternativeNameRFC822EmailPrincipalResolver(context, alternatePrincipalAttribute);
+        val resolver = new X509SubjectAlternativeNameRFC822EmailPrincipalResolver(context, alternatePrincipalAttribute,
+                new DefaultX509AttributeExtractor());
         val certificate = (X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(
             new FileInputStream(getClass().getResource(certPath).getPath()));
 
@@ -109,7 +110,7 @@ public class X509SubjectAlternativeNameRFC822EmailPrincipalResolverTests {
             assertNotNull(principal);
             assertFalse(principal.getAttributes().isEmpty());
             if (requiredAttribute != null) {
-                assertTrue(principal.getAttributes().keySet().contains(requiredAttribute));
+                assertTrue(principal.getAttributes().containsKey(requiredAttribute));
             }
         } else {
             assertNull(principal);
@@ -128,7 +129,8 @@ public class X509SubjectAlternativeNameRFC822EmailPrincipalResolverTests {
             .activeAttributeRepositoryIdentifiers(CollectionUtils.wrapSet(IPersonAttributeDao.WILDCARD))
             .build();
 
-        val resolver = new X509SubjectAlternativeNameRFC822EmailPrincipalResolver(context, null);
+        val resolver = new X509SubjectAlternativeNameRFC822EmailPrincipalResolver(context, null,
+                new DefaultX509AttributeExtractor());
         val certificate = mock(X509Certificate.class);
         when(certificate.getSubjectAlternativeNames()).thenThrow(new CertificateParsingException());
         assertNull(resolver.resolvePrincipalInternal(certificate));

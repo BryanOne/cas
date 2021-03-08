@@ -23,8 +23,9 @@ import java.security.cert.X509Certificate;
 public class X509SubjectAlternativeNameUPNPrincipalResolver extends AbstractX509PrincipalResolver {
 
     public X509SubjectAlternativeNameUPNPrincipalResolver(final PrincipalResolutionContext context,
-                                                          final String alternatePrincipalAttribute) {
-        super(context, alternatePrincipalAttribute);
+                                                          final String alternatePrincipalAttribute,
+                                                          final X509AttributeExtractor x509AttributeExtractor) {
+        super(context, alternatePrincipalAttribute, x509AttributeExtractor);
     }
 
     @Override

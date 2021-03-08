@@ -22,13 +22,15 @@ public class X509SerialNumberPrincipalResolver extends AbstractX509PrincipalReso
 
     private final boolean zeroPadding;
 
-    public X509SerialNumberPrincipalResolver(final PrincipalResolutionContext context) {
-        this(context, DEFAULT_RADIX, false);
+    public X509SerialNumberPrincipalResolver(final PrincipalResolutionContext context,
+                                             final X509AttributeExtractor x509AttributeExtractor) {
+        this(context, DEFAULT_RADIX, false, x509AttributeExtractor);
     }
 
     public X509SerialNumberPrincipalResolver(final PrincipalResolutionContext context,
-                                             final int radix, final boolean zeroPadding) {
-        super(context);
+                                             final int radix, final boolean zeroPadding,
+                                             final X509AttributeExtractor x509AttributeExtractor) {
+        super(context, x509AttributeExtractor);
         this.radix = radix;
         this.zeroPadding = zeroPadding;
     }

@@ -46,8 +46,9 @@ public class X509SubjectDNPrincipalResolverTests {
             .resolveAttributes(true)
             .activeAttributeRepositoryIdentifiers(CollectionUtils.wrapSet(IPersonAttributeDao.WILDCARD))
             .build();
-        resolver = new X509SubjectDNPrincipalResolver(context, null);
-        resolverRFC2253 = new X509SubjectDNPrincipalResolver(context, X500Principal.RFC2253);
+        val x509AttributeExtractor = new DefaultX509AttributeExtractor();
+        resolver = new X509SubjectDNPrincipalResolver(context, null, x509AttributeExtractor);
+        resolverRFC2253 = new X509SubjectDNPrincipalResolver(context, X500Principal.RFC2253, x509AttributeExtractor);
     }
 
     @Test

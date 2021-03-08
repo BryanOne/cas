@@ -4,13 +4,7 @@ import org.apereo.cas.adaptors.x509.authentication.CRLFetcher;
 import org.apereo.cas.adaptors.x509.authentication.ResourceCRLFetcher;
 import org.apereo.cas.adaptors.x509.authentication.handler.support.X509CredentialsAuthenticationHandler;
 import org.apereo.cas.adaptors.x509.authentication.ldap.LdaptiveResourceCRLFetcher;
-import org.apereo.cas.adaptors.x509.authentication.principal.X509CommonNameEDIPIPrincipalResolver;
-import org.apereo.cas.adaptors.x509.authentication.principal.X509SerialNumberAndIssuerDNPrincipalResolver;
-import org.apereo.cas.adaptors.x509.authentication.principal.X509SerialNumberPrincipalResolver;
-import org.apereo.cas.adaptors.x509.authentication.principal.X509SubjectAlternativeNameRFC822EmailPrincipalResolver;
-import org.apereo.cas.adaptors.x509.authentication.principal.X509SubjectAlternativeNameUPNPrincipalResolver;
-import org.apereo.cas.adaptors.x509.authentication.principal.X509SubjectDNPrincipalResolver;
-import org.apereo.cas.adaptors.x509.authentication.principal.X509SubjectPrincipalResolver;
+import org.apereo.cas.adaptors.x509.authentication.principal.*;
 import org.apereo.cas.adaptors.x509.authentication.revocation.checker.CRLDistributionPointRevocationChecker;
 import org.apereo.cas.adaptors.x509.authentication.revocation.checker.NoOpRevocationChecker;
 import org.apereo.cas.adaptors.x509.authentication.revocation.checker.ResourceCRLRevocationChecker;
@@ -46,6 +40,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -240,7 +235,9 @@ public class X509AuthenticationConfiguration {
                 .commaDelimitedListToSet(principal.getActiveAttributeRepositoryIds()))
             .build();
 
-        return new X509SubjectPrincipalResolver(context, x509.getPrincipalDescriptor());
+        return new X509SubjectPrincipalResolver(context,
+                x509.getPrincipalDescriptor(),
+                x509AttributeExtractor());
     }
 
     @Bean
@@ -263,7 +260,9 @@ public class X509AuthenticationConfiguration {
             .activeAttributeRepositoryIdentifiers(org.springframework.util.StringUtils
                 .commaDelimitedListToSet(principal.getActiveAttributeRepositoryIds()))
             .build();
-        return new X509SubjectDNPrincipalResolver(context, getSubjectDnFormat(subjectDn.getFormat()));
+        return new X509SubjectDNPrincipalResolver(context,
+                getSubjectDnFormat(subjectDn.getFormat()),
+                x509AttributeExtractor());
     }
 
     @Bean
@@ -288,7 +287,8 @@ public class X509AuthenticationConfiguration {
                 .commaDelimitedListToSet(principal.getActiveAttributeRepositoryIds()))
             .build();
         return new X509SubjectAlternativeNameUPNPrincipalResolver(context,
-            subjectAltNameProperties.getAlternatePrincipalAttribute());
+            subjectAltNameProperties.getAlternatePrincipalAttribute(),
+            x509AttributeExtractor());
     }
 
     @Bean
@@ -314,7 +314,8 @@ public class X509AuthenticationConfiguration {
             .build();
 
         return new X509SubjectAlternativeNameRFC822EmailPrincipalResolver(context,
-            rfc822EmailProperties.getAlternatePrincipalAttribute());
+            rfc822EmailProperties.getAlternatePrincipalAttribute(),
+            x509AttributeExtractor());
     }
 
     @Bean
@@ -355,7 +356,8 @@ public class X509AuthenticationConfiguration {
 
         return new X509SerialNumberAndIssuerDNPrincipalResolver(context,
             serialNoDnProperties.getSerialNumberPrefix(),
-            serialNoDnProperties.getValueDelimiter());
+            serialNoDnProperties.getValueDelimiter(),
+            x509AttributeExtractor());
     }
 
     @Bean
@@ -381,13 +383,24 @@ public class X509AuthenticationConfiguration {
             .build();
 
         return new X509CommonNameEDIPIPrincipalResolver(context,
-            cnEdipiProperties.getAlternatePrincipalAttribute());
+            cnEdipiProperties.getAlternatePrincipalAttribute(),
+            x509AttributeExtractor());
     }
 
     @ConditionalOnMissingBean(name = "x509AuthenticationEventExecutionPlanConfigurer")
     @Bean
     public AuthenticationEventExecutionPlanConfigurer x509AuthenticationEventExecutionPlanConfigurer() {
         return plan -> plan.registerAuthenticationHandlerWithPrincipalResolver(x509CredentialsAuthenticationHandler(), getPrincipalResolver());
+    }
+
+    @ConditionalOnMissingBean(name = "x509AttributeExtractor")
+    @Bean
+    public X509AttributeExtractor x509AttributeExtractor() {
+        val x509 = casProperties.getAuthn().getX509();
+        if (x509.getCnEdipi().isExtractEdipiAsAttribute()) {
+            return new EDIPIX509AttributeExtractor();
+        }
+        return new DefaultX509AttributeExtractor();
     }
 
     private PrincipalResolver getPrincipalResolver() {
@@ -437,11 +450,13 @@ public class X509AuthenticationConfiguration {
 
         if (Character.MIN_RADIX <= radix && radix <= Character.MAX_RADIX) {
             if (radix == HEX) {
-                return new X509SerialNumberPrincipalResolver(context, radix, serialNoProperties.isPrincipalHexSNZeroPadding());
+                return new X509SerialNumberPrincipalResolver(context, radix,
+                        serialNoProperties.isPrincipalHexSNZeroPadding(),
+                        x509AttributeExtractor());
             }
-            return new X509SerialNumberPrincipalResolver(context, radix, false);
+            return new X509SerialNumberPrincipalResolver(context, radix, false, x509AttributeExtractor());
         }
-        return new X509SerialNumberPrincipalResolver(context);
+        return new X509SerialNumberPrincipalResolver(context, x509AttributeExtractor());
     }
 
     private RevocationChecker getRevocationCheckerFrom(final X509Properties x509) {

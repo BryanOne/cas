@@ -101,7 +101,7 @@ public class X509SubjectPrincipalResolverTests {
             .activeAttributeRepositoryIdentifiers(CollectionUtils.wrapSet(IPersonAttributeDao.WILDCARD))
             .build();
 
-        val resolver = new X509SubjectPrincipalResolver(context, descriptor);
+        val resolver = new X509SubjectPrincipalResolver(context, descriptor, new DefaultX509AttributeExtractor());
         val certificate = (X509Certificate) CertificateFactory.getInstance("X509").generateCertificate(
             new FileInputStream(certPath));
 

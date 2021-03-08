@@ -43,7 +43,8 @@ public class X509SerialNumberAndIssuerDNPrincipalResolverTests {
             .resolveAttributes(true)
             .activeAttributeRepositoryIdentifiers(CollectionUtils.wrapSet(IPersonAttributeDao.WILDCARD))
             .build();
-        resolver = new X509SerialNumberAndIssuerDNPrincipalResolver(context, null, null);
+        val x509AttributeExtractor = new DefaultX509AttributeExtractor();
+        resolver = new X509SerialNumberAndIssuerDNPrincipalResolver(context, null, null, x509AttributeExtractor);
     }
 
     @Test

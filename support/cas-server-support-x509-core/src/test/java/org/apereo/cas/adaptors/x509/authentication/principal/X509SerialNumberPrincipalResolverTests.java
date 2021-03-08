@@ -35,6 +35,8 @@ public class X509SerialNumberPrincipalResolverTests {
 
     private X509SerialNumberPrincipalResolver resolver;
 
+    private X509AttributeExtractor x509AttributeExtractor;
+
     @BeforeEach
     public void setup() {
         val context = PrincipalResolutionContext.builder()
@@ -46,7 +48,8 @@ public class X509SerialNumberPrincipalResolverTests {
             .resolveAttributes(true)
             .activeAttributeRepositoryIdentifiers(CollectionUtils.wrapSet(IPersonAttributeDao.WILDCARD))
             .build();
-        resolver = new X509SerialNumberPrincipalResolver(context);
+        x509AttributeExtractor = new DefaultX509AttributeExtractor();
+        resolver = new X509SerialNumberPrincipalResolver(context, x509AttributeExtractor);
     }
 
     @Test
@@ -82,7 +85,7 @@ public class X509SerialNumberPrincipalResolverTests {
             .activeAttributeRepositoryIdentifiers(CollectionUtils.wrapSet(IPersonAttributeDao.WILDCARD))
             .build();
 
-        val r = new X509SerialNumberPrincipalResolver(context, 16, true);
+        val r = new X509SerialNumberPrincipalResolver(context, 16, true, x509AttributeExtractor);
         val mockCert = mock(X509Certificate.class);
         when(mockCert.getSerialNumber()).thenReturn(BigInteger.valueOf(300L));
 
@@ -101,7 +104,7 @@ public class X509SerialNumberPrincipalResolverTests {
             .resolveAttributes(true)
             .activeAttributeRepositoryIdentifiers(CollectionUtils.wrapSet(IPersonAttributeDao.WILDCARD))
             .build();
-        val r = new X509SerialNumberPrincipalResolver(context, 16, false);
+        val r = new X509SerialNumberPrincipalResolver(context, 16, false, x509AttributeExtractor);
         val mockCert = mock(X509Certificate.class);
         when(mockCert.getSerialNumber()).thenReturn(BigInteger.valueOf(300L));
 
@@ -120,7 +123,7 @@ public class X509SerialNumberPrincipalResolverTests {
             .resolveAttributes(true)
             .activeAttributeRepositoryIdentifiers(CollectionUtils.wrapSet(IPersonAttributeDao.WILDCARD))
             .build();
-        val r = new X509SerialNumberPrincipalResolver(context, 16, true);
+        val r = new X509SerialNumberPrincipalResolver(context, 16, true, x509AttributeExtractor);
         val mockCert = mock(X509Certificate.class);
         when(mockCert.getSerialNumber()).thenReturn(BigInteger.valueOf(60300L));
 

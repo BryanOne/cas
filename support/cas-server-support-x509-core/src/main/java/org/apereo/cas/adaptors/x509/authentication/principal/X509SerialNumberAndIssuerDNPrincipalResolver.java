@@ -38,8 +38,9 @@ public class X509SerialNumberAndIssuerDNPrincipalResolver extends AbstractX509Pr
 
     public X509SerialNumberAndIssuerDNPrincipalResolver(final PrincipalResolutionContext context,
                                                         final String serialNumberPrefix,
-                                                        final String valueDelimiter) {
-        super(context);
+                                                        final String valueDelimiter,
+                                                        final X509AttributeExtractor x509AttributeExtractor) {
+        super(context, x509AttributeExtractor);
         this.serialNumberPrefix = StringUtils.defaultString(serialNumberPrefix, "SERIALNUMBER=");
         this.valueDelimiter = StringUtils.defaultIfBlank(valueDelimiter, ", ");
     }
